@@ -1,6 +1,6 @@
 <?php
 
-namespace Sholokhov\BitrixModels\Interfaces;
+namespace Sholokhov\BitrixModels\Models;
 
 /**
  * Базовое описание структуры модели
@@ -10,6 +10,19 @@ namespace Sholokhov\BitrixModels\Interfaces;
  */
 interface ModelInterface
 {
+    /**
+     * Флаг возможности работы с моделью.
+     *
+     * За данное состояние может овечать множество фактороф, одними из таких:
+     * <li>Модуль с которым ваимодействует модель не установлен</li>
+     * <li>Отсутствуют настройки модели</li>
+     * <li>У нее нет настроения</li>
+     * <li>и т.д.</li>
+     *
+     * @return bool
+     */
+    public function isActive(): bool;
+
     /**
      * Получение сборщика запроса
      *

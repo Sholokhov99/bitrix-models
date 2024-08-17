@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "360a60e121eeb12013b78af23586b4c9",
-    "packages": [],
+    "content-hash": "3e82955e4a15cfeb159cbc432df93a62",
+    "packages": [
+        {
+            "name": "sholokhov/bitrix-option",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sholokhov99/bitrix-option.git",
+                "reference": "9e2aecb0cbd7357fafaf4096679f990768830465"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sholokhov99/bitrix-option/zipball/9e2aecb0cbd7357fafaf4096679f990768830465",
+                "reference": "9e2aecb0cbd7357fafaf4096679f990768830465",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sholokhov\\BitrixOption\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniil Sholokhov",
+                    "email": "sholokhov.daniil@gmail.com"
+                }
+            ],
+            "keywords": [
+                "b_option",
+                "bitrix",
+                "options"
+            ],
+            "support": {
+                "issues": "https://github.com/Sholokhov99/bitrix-option/issues",
+                "source": "https://github.com/Sholokhov99/bitrix-option/tree/1.0.0"
+            },
+            "time": "2024-08-17T17:22:03+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",

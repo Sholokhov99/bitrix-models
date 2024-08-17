@@ -3,6 +3,8 @@
 namespace Sholokhov\BitrixModels\Models;
 
 use ReflectionException;
+
+use Sholokhov\BitrixModels\Builder\QueryBuilder;
 use Sholokhov\BitrixModels\Container\Container;
 
 /**
@@ -55,13 +57,14 @@ class Manager
     }
 
     /**
-     * Получение провайдера конструктора запроса
+     * Получение конструктора запроса
      *
      * @return object
      */
     public function getQueryProvider(): object
     {
-        return $this->getProvider('Query');
+        $builder = new QueryBuilder($this->getEntity(), $this->getModelSettings());
+        return $builder->make();
     }
 
     /**

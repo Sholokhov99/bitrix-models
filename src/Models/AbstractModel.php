@@ -9,11 +9,14 @@ namespace Sholokhov\BitrixModels\Models;
  */
 abstract class AbstractModel implements ModelInterface
 {
+    private readonly Manager $manager;
+
     /**
      * @param string|null $siteID - ID сайта, для которого необходимо подгрузить настройки модели
      */
     public function __construct(?string $siteID = null)
     {
+        $this->manager = new Manager($this::class, $siteID);
     }
 
     /**
@@ -24,7 +27,7 @@ abstract class AbstractModel implements ModelInterface
      */
     final public function query(): object
     {
-        return $this->getManager()->getProvider('Query');
+        return $this->getManager()->getQueryProvider();
     }
 
     /**
@@ -57,17 +60,17 @@ abstract class AbstractModel implements ModelInterface
      */
     final protected function getSettings(): object
     {
-        return $this->getManager()->getProvider('Settings');
+        return $this->getManager()->getSettingsProvider();
     }
 
     /**
      * Менеджер модели
      *
      * @final
-     * @return object
+     * @return Manager
      */
-    final protected function getManager(): object
+    final protected function getManager(): Manager
     {
-        return new class{};
+        return $this->manager;
     }
 }

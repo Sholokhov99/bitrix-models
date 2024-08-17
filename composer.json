@@ -1,0 +1,23 @@
+{
+  "name": "sholokhov/bitrix-models",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "bitrix",
+    "models"
+  ],
+  "authors": [
+    {
+      "name": "Daniil",
+      "email": "sholokhov.daniil@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sholokhov\\BitrixModels\\": "src"
+    }
+  },
+  "require": {
+    "php": "^8.2"
+  }
+}

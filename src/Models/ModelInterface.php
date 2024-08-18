@@ -2,7 +2,7 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
-use Sholokhov\BitrixModels\Models\Attributes\QueryProvider;
+use Sholokhov\BitrixModels\Attributes\QueryProvider;
 
 /**
  * Базовое описание структуры модели

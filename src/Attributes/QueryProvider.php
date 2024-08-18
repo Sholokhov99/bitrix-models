@@ -1,6 +1,6 @@
 <?php
 
-namespace Sholokhov\BitrixModels\Models\Attributes;
+namespace Sholokhov\BitrixModels\Attributes;
 
 use Attribute;
 

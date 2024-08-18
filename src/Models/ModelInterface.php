@@ -2,7 +2,7 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
-use Sholokhov\BitrixModels\Models\Attributes\AsQuery;
+use Sholokhov\BitrixModels\Models\Attributes\QueryProvider;
 
 /**
  * Базовое описание структуры модели
@@ -11,7 +11,7 @@ use Sholokhov\BitrixModels\Models\Attributes\AsQuery;
  * Указанный интерфейс может использовапться вне пакета и будет поддерживаться обратная совместимость на сколько это возможно.
  *
  * Каждая модель должна иметь атрибуты описывающие его работу:
- * <li>{@see AsQuery} - Используемый сборщик запросов</li>
+ * <li>{@see QueryProvider} - Используемый сборщик запросов</li>
  */
 interface ModelInterface
 {

@@ -6,8 +6,8 @@ use Exception;
 use ReflectionException;
 
 use Sholokhov\BitrixModels\Builder\EntityBuilder;
-use Sholokhov\BitrixModels\Builder\QueryBuilder;
 use Sholokhov\BitrixModels\Providers\Settings;
+use Sholokhov\BitrixModels\Providers\Query;
 use Sholokhov\BitrixModels\Exception\SystemException;
 
 use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
@@ -84,8 +84,7 @@ class Manager
      */
     public function getQueryProvider(): object
     {
-        $builder = new QueryBuilder($this->getEntity(), $this->getModelSettings());
-        return $builder->make();
+        return Query\Builder::make($this->getEntity(), $this->getModelSettings());
     }
 
     /**

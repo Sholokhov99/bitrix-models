@@ -2,8 +2,10 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
-use Sholokhov\BitrixOption\Attributes\Option;
+use Sholokhov\BitrixModels\Attributes\OptionProvider;
 use Sholokhov\BitrixModels\Attributes\QueryProvider;
+
+use Sholokhov\BitrixOption\Attributes\Option;
 
 /**
  * Базовое описание структуры модели
@@ -13,6 +15,7 @@ use Sholokhov\BitrixModels\Attributes\QueryProvider;
  *
  * Каждая модель должна иметь атрибуты описывающие его работу:
  * <li>{@see QueryProvider} - Используемый сборщик запросов</li>
+ * <li>{@see OptionProvider} - Используемый провайдер настроек</li>
  * <li>{@see Option} - Конфигурация поиска настроек модели</li>
  */
 interface ModelInterface

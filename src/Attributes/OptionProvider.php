@@ -5,14 +5,15 @@ namespace Sholokhov\BitrixModels\Attributes;
 use Attribute;
 
 /**
- * Описывает используемый сборщик запросов в рамках модели
+ * Описывает используемый провайдер настроек
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class QueryProvider
+class OptionProvider
 {
     public function __construct(
         public readonly string $entity
     )
     {
+
     }
 }

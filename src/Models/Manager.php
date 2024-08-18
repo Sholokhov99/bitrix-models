@@ -2,10 +2,16 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
+use Exception;
+use ReflectionClass;
 use ReflectionException;
 
 use Sholokhov\BitrixModels\Builder\QueryBuilder;
 use Sholokhov\BitrixModels\Container\Container;
+
+use Sholokhov\BitrixOption\Manager as Settings;
+
+use Bitrix\Main\Result;
 
 /**
  * Менеджер моделей, используется для возможности управления настройками модели и регистрации новой.
@@ -28,7 +34,7 @@ class Manager
 
     public function __construct(
         private readonly string $entity,
-        private readonly object $settingsManager
+        private readonly Settings $settingsManager
     )
     {
         $this->providers = new Container();
@@ -42,16 +48,17 @@ class Manager
      */
     public function make(): ModelInterface
     {
-        $reflection = new \ReflectionClass($this->entity);
+        $reflection = new ReflectionClass($this->entity);
         return $reflection->newInstance($this->settingsManager->getSiteID());
     }
 
     /**
      * Сохранение настроек модели
      *
-     * @return bool
+     * @return Result
+     * @throws Exception
      */
-    public function save(): bool
+    public function save(): Result
     {
         return $this->settingsManager->save();
     }
@@ -80,11 +87,11 @@ class Manager
     /**
      * Получение провайдера настроек
      *
-     * @return object
+     * @return Settings
      */
-    public function getSettingsProvider(): object
+    public function getSettingsProvider(): Settings
     {
-        return $this->getProvider('Settings');
+        return $this->settingsManager;
     }
 
     /**

@@ -3,13 +3,15 @@
 namespace Sholokhov\BitrixModels\Models;
 
 use Exception;
-use ReflectionClass;
 use ReflectionException;
 
+use Sholokhov\BitrixModels\Builder\EntityBuilder;
 use Sholokhov\BitrixModels\Builder\QueryBuilder;
-use Sholokhov\BitrixModels\Container\Container;
+use Sholokhov\BitrixModels\Providers\Settings;
+use Sholokhov\BitrixModels\Exception\SystemException;
 
-use Sholokhov\BitrixOption\Manager as Settings;
+use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
+use Sholokhov\BitrixOption\Exception\InvalidValueException;
 
 use Bitrix\Main\Result;
 
@@ -26,18 +28,31 @@ use Bitrix\Main\Result;
 class Manager
 {
     /**
-     * Используемые провайдеры
+     * Объект модели
      *
-     * @var Container
+     * @var string
      */
-    private Container $providers;
+    private string $entity;
 
-    public function __construct(
-        private readonly string $entity,
-        private readonly Settings $settingsManager
-    )
+    /**
+     * Провайдер настроек модели
+     *
+     * @var Settings\SettingsProviderInterface
+     */
+    private Settings\SettingsProviderInterface $settingsProvider;
+
+    /**
+     * @param string $entity
+     * @param string|null $siteID
+     * @throws ReflectionException
+     * @throws SystemException
+     * @throws ConfigurationNotFoundException
+     * @throws InvalidValueException
+     */
+    public function __construct(string $entity, ?string $siteID = null)
     {
-        $this->providers = new Container();
+        $this->entity = $entity;
+        $this->settingsProvider = Settings\Builder::make($entity, $siteID);
     }
 
     /**
@@ -48,8 +63,7 @@ class Manager
      */
     public function make(): ModelInterface
     {
-        $reflection = new ReflectionClass($this->entity);
-        return $reflection->newInstance($this->settingsManager->getSiteID());
+        return EntityBuilder::make($this->getEntity(), $this->getSettingsProvider()->getSiteID());
     }
 
     /**
@@ -60,7 +74,7 @@ class Manager
      */
     public function save(): Result
     {
-        return $this->settingsManager->save();
+        return $this->settingsProvider->save();
     }
 
     /**
@@ -87,11 +101,11 @@ class Manager
     /**
      * Получение провайдера настроек
      *
-     * @return Settings
+     * @return Settings\SettingsProviderInterface
      */
-    public function getSettingsProvider(): Settings
+    public function getSettingsProvider(): Settings\SettingsProviderInterface
     {
-        return $this->settingsManager;
+        return $this->settingsProvider;
     }
 
     /**
@@ -114,16 +128,5 @@ class Manager
     public function getEntity(): string
     {
         return $this->entity;
-    }
-
-    /**
-     * Получение используемого провайдера
-     *
-     * @param string $code
-     * @return object
-     */
-    public function getProvider(string $code): object
-    {
-        return $this->providers->get($code);
     }
 }

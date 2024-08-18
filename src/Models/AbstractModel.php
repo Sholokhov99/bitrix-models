@@ -2,6 +2,13 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
+use ReflectionException;
+
+use Sholokhov\BitrixModels\Exception\SystemException;
+
+use Sholokhov\BitrixOption\Exception\InvalidValueException;
+use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
+
 /**
  * Базовое описание структуры модели.
  *
@@ -13,6 +20,10 @@ abstract class AbstractModel implements ModelInterface
 
     /**
      * @param string|null $siteID - ID сайта, для которого необходимо подгрузить настройки модели
+     * @throws ReflectionException
+     * @throws SystemException
+     * @throws ConfigurationNotFoundException
+     * @throws InvalidValueException
      */
     public function __construct(?string $siteID = null)
     {
@@ -27,7 +38,7 @@ abstract class AbstractModel implements ModelInterface
      */
     final public function query(): object
     {
-        return $this->getManager()->getQueryProvider();
+        return $this->manager->getQueryProvider();
     }
 
     /**
@@ -60,17 +71,6 @@ abstract class AbstractModel implements ModelInterface
      */
     final protected function getSettings(): object
     {
-        return $this->getManager()->getSettingsProvider();
-    }
-
-    /**
-     * Менеджер модели
-     *
-     * @final
-     * @return Manager
-     */
-    final protected function getManager(): Manager
-    {
-        return $this->manager;
+        return $this->manager->getSettingsProvider();
     }
 }

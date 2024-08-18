@@ -19,6 +19,6 @@
   },
   "require": {
     "php": "^8.2",
-    "sholokhov/bitrix-option": "^1.0"
+    "sholokhov/bitrix-option": "^1.0.1"
   }
 }

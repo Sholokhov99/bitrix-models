@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e82955e4a15cfeb159cbc432df93a62",
+    "content-hash": "c662be3f6eff6f8fa9e6be4df653a69b",
     "packages": [
         {
             "name": "sholokhov/bitrix-option",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sholokhov99/bitrix-option.git",
-                "reference": "9e2aecb0cbd7357fafaf4096679f990768830465"
+                "reference": "6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sholokhov99/bitrix-option/zipball/9e2aecb0cbd7357fafaf4096679f990768830465",
-                "reference": "9e2aecb0cbd7357fafaf4096679f990768830465",
+                "url": "https://api.github.com/repos/Sholokhov99/bitrix-option/zipball/6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90",
+                "reference": "6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90",
                 "shasum": ""
             },
             "require": {
@@ -46,9 +46,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Sholokhov99/bitrix-option/issues",
-                "source": "https://github.com/Sholokhov99/bitrix-option/tree/1.0.0"
+                "source": "https://github.com/Sholokhov99/bitrix-option/tree/1.0.1"
             },
-            "time": "2024-08-17T17:22:03+00:00"
+            "time": "2024-08-18T04:35:38+00:00"
         }
     ],
     "packages-dev": [],

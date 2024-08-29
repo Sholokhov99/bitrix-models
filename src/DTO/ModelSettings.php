@@ -2,24 +2,21 @@
 
 namespace Sholokhov\BitrixModels\DTO;
 
-use Sholokhov\BitrixModels\Container\Container;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Exception;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ModelSettings extends AbstractModelSettings implements ModelSettingsInterface
 {
-
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
-        $normalizer = new ObjectNormalizer();
-
-        return $normalizer->normalize()
-
-        $id = $this->getID();
-        $code = $this->getCode();
-        $entity = $this->getEntity();
-
-        return json_encode(compact('id', 'code', 'entity'));
+        return self::makeSerializer()
+                   ->serialize($this, JsonEncoder::FORMAT);
     }
 
     /**
@@ -37,22 +34,26 @@ class ModelSettings extends AbstractModelSettings implements ModelSettingsInterf
      *
      * @param string $value
      * @return self
-     * @throws ExceptionInterface
      */
     public static function fromString(string $value): self
     {
-        $normalizer = new ObjectNormalizer();
-        return $normalizer->denormalize($value, self::class, 'json');
+        try {
+            $entity = self::makeSerializer()
+                          ->deserialize($value, self::class, JsonEncoder::FORMAT);
+        } catch (Exception) {
+            $entity = new self;
+        }
+
+        return $entity;
     }
 
     /**
-     * Нормализация
+     * Создание конвертатора данных
      *
-     * @param array $data
-     * @return array
+     * @return Serializer
      */
-    protected static function normalize(array $data): array
+    protected static function makeSerializer(): Serializer
     {
-        return $data;
+        return new Serializer([new ObjectNormalizer], [new JsonEncoder()]);
     }
 }

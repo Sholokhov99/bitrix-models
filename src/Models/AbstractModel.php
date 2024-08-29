@@ -4,6 +4,7 @@ namespace Sholokhov\BitrixModels\Models;
 
 use ReflectionException;
 
+use Sholokhov\BitrixModels\DTO\ModelSettingsInterface;
 use Sholokhov\BitrixModels\Exception\SystemException;
 
 use Sholokhov\BitrixOption\Exception\InvalidValueException;
@@ -20,14 +21,13 @@ abstract class AbstractModel implements ModelInterface
 
     /**
      * @param string|null $siteID - ID сайта, для которого необходимо подгрузить настройки модели
-     * @throws ReflectionException
-     * @throws SystemException
      * @throws ConfigurationNotFoundException
      * @throws InvalidValueException
+     * @throws ReflectionException
      */
     public function __construct(?string $siteID = null)
     {
-        $this->manager = new Manager($this::class, $siteID);
+        $this->manager = new Manager(static::class, $siteID);
     }
 
     /**
@@ -35,6 +35,7 @@ abstract class AbstractModel implements ModelInterface
      *
      * @final
      * @return object
+     * @throws SystemException
      */
     final public function query(): object
     {
@@ -46,6 +47,7 @@ abstract class AbstractModel implements ModelInterface
      *
      * @final
      * @return string
+     * @throws SystemException
      */
     final public function getID(): string
     {
@@ -60,17 +62,18 @@ abstract class AbstractModel implements ModelInterface
      */
     final public function getSiteID(): string
     {
-        return $this->getSettings()->getSiteID();
+        return $this->manager->getSiteID();
     }
 
     /**
      * Настройки модели
      *
      * @final
-     * @return object
+     * @return ModelSettingsInterface
+     * @throws SystemException
      */
-    final protected function getSettings(): object
+    final protected function getSettings(): ModelSettingsInterface
     {
-        return $this->manager->getSettingsProvider();
+        return $this->manager->getSettings();
     }
 }

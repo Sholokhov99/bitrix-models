@@ -64,7 +64,7 @@ class Manager
      */
     public function make(): ModelInterface
     {
-        return EntityBuilder::make($this->getEntity(), $this->getSettingsProvider()->getSiteID());
+        return EntityBuilder::make($this->getEntity(), $this->settingsProvider->getSiteID());
     }
 
     /**
@@ -97,23 +97,13 @@ class Manager
      */
     public function getSettings(): ModelSettingsInterface
     {
-        $settings = $this->getSettingsProvider()->get();
+        $settings = $this->settingsProvider->get();
 
         if (!($settings instanceof ModelSettingsInterface)) {
             throw new SystemException('Model settings store does not implement interface ' . ModelSettingsInterface::class);
         }
 
         return $settings;
-    }
-
-    /**
-     * Получение провайдера настроек
-     *
-     * @return SettingsManager
-     */
-    public function getSettingsProvider(): SettingsManager
-    {
-        return $this->settingsProvider;
     }
 
     /**

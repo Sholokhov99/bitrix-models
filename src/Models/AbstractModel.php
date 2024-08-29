@@ -2,7 +2,7 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
-use Bitrix\Main\Result;
+use Exception;
 use ReflectionException;
 
 use Sholokhov\BitrixModels\Providers\Query\Builder as QueryBuilder;
@@ -13,6 +13,9 @@ use Sholokhov\BitrixOption\Exception\InvalidValueException;
 use Sholokhov\BitrixOption\Builder\Loader as SettingsLoader;
 use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
 use Sholokhov\BitrixOption\Manager as SettingsManager;
+
+use Bitrix\Main\Result;
+use Bitrix\Main\ArgumentNullException;
 
 /**
  * Базовое описание структуры модели.
@@ -39,13 +42,24 @@ abstract class AbstractModel implements ModelInterface
         $this->settingsProvider = SettingsLoader::loadByEntity($this, $siteID);
     }
 
+    /**
+     * Регистрация модели
+     *
+     * @param ModelSettingsInterface $settings
+     * @return Result
+     * @throws Exception
+     */
     public function registration(ModelSettingsInterface $settings): Result
     {
-        // Нормализовать
-
         return $this->settingsProvider->set($settings);
     }
 
+    /**
+     * Снять регистрацию с модели
+     *
+     * @return void
+     * @throws ArgumentNullException
+     */
     public function unRegistration(): void
     {
         $this->settingsProvider->remove();

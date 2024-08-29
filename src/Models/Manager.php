@@ -6,10 +6,12 @@ use Exception;
 use ReflectionException;
 
 use Sholokhov\BitrixModels\Builder\EntityBuilder;
-use Sholokhov\BitrixModels\Providers\Settings;
-use Sholokhov\BitrixModels\Providers\Query;
+use Sholokhov\BitrixModels\DTO\ModelSettingsInterface;
 use Sholokhov\BitrixModels\Exception\SystemException;
+use Sholokhov\BitrixModels\Providers\Query;
 
+use Sholokhov\BitrixOption\Manager as SettingsManager;
+use Sholokhov\BitrixOption\Builder\Loader as SettingsLoader;
 use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
 use Sholokhov\BitrixOption\Exception\InvalidValueException;
 
@@ -20,9 +22,9 @@ use Bitrix\Main\Result;
  * Дополнительно присутствует возможность выполнять простые запросы к ресурсу модели (ИБ, Справочник и т.д.)
  * Для этого предусмотрена функция {@see static::getQueryProvider()}
  * Все дополнительные запросы уже находятся внутри необходимой модели.
- * Благодаря менеджеру можем получить доступ к настройкам модели {@see static::getModelSettings()}
+ * Благодаря менеджеру можем получить доступ к настройкам модели {@see static::getSettings()}
  * При необходимостри моджем получит достпу к настрйокам группы к которой относится текущая модель {@see static::getSettingsProvider()}
- * {@see static::getModelSettings()} является оберткой над {@see static::getSettingsProvider()}
+ * {@see static::getSettings()} является оберткой над {@see static::getSettingsProvider()}
  * из-за чего нам не нужно явно указывать некоторые данные в функции.
  */
 class Manager
@@ -32,27 +34,26 @@ class Manager
      *
      * @var string
      */
-    private string $entity;
+    private readonly string $entity;
 
     /**
      * Провайдер настроек модели
      *
-     * @var Settings\SettingsProviderInterface
+     * @var SettingsManager
      */
-    private Settings\SettingsProviderInterface $settingsProvider;
+    private readonly SettingsManager $settingsProvider;
 
     /**
      * @param string $entity
      * @param string|null $siteID
-     * @throws ReflectionException
-     * @throws SystemException
      * @throws ConfigurationNotFoundException
      * @throws InvalidValueException
+     * @throws ReflectionException
      */
     public function __construct(string $entity, ?string $siteID = null)
     {
         $this->entity = $entity;
-        $this->settingsProvider = Settings\Builder::make($entity, $siteID);
+        $this->settingsProvider = SettingsLoader::loadByEntity($entity, $siteID);
     }
 
     /**
@@ -81,42 +82,48 @@ class Manager
      * Получение конструктора запроса
      *
      * @return object
+     * @throws SystemException
      */
     public function getQueryProvider(): object
     {
-        return Query\Builder::make($this->getEntity(), $this->getModelSettings());
+        return Query\Builder::make($this->getEntity(), $this->getSettings());
     }
 
     /**
      * Получение настроек модели
      *
-     * @return object
+     * @return ModelSettingsInterface
+     * @throws SystemException
      */
-    public function getModelSettings(): object
+    public function getSettings(): ModelSettingsInterface
     {
-        return $this->getSettingsProvider()->get($this->getEntityCode());
+        $settings = $this->getSettingsProvider()->get();
+
+        if (!($settings instanceof ModelSettingsInterface)) {
+            throw new SystemException('Model settings store does not implement interface ' . ModelSettingsInterface::class);
+        }
+
+        return $settings;
     }
 
     /**
      * Получение провайдера настроек
      *
-     * @return Settings\SettingsProviderInterface
+     * @return SettingsManager
      */
-    public function getSettingsProvider(): Settings\SettingsProviderInterface
+    public function getSettingsProvider(): SettingsManager
     {
         return $this->settingsProvider;
     }
 
     /**
-     * Символьный код модели
-     *
-     * Используется, для идентификации настроек
+     * ID сайта модели, с которой работает менеджер
      *
      * @return string
      */
-    public function getEntityCode(): string
+    public function getSiteID(): string
     {
-        return '';
+        return $this->settingsProvider->getSiteID();
     }
 
     /**

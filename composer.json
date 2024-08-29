@@ -19,6 +19,7 @@
   },
   "require": {
     "php": "^8.2",
-    "sholokhov/bitrix-option": "^1.0.1"
+    "sholokhov/bitrix-option": "^1.0.1",
+    "symfony/serializer": "^7.1"
   }
 }

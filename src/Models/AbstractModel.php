@@ -2,6 +2,7 @@
 
 namespace Sholokhov\BitrixModels\Models;
 
+use Bitrix\Main\Result;
 use ReflectionException;
 
 use Sholokhov\BitrixModels\Providers\Query\Builder as QueryBuilder;
@@ -36,6 +37,18 @@ abstract class AbstractModel implements ModelInterface
     public function __construct(?string $siteID = null)
     {
         $this->settingsProvider = SettingsLoader::loadByEntity($this, $siteID);
+    }
+
+    public function registration(ModelSettingsInterface $settings): Result
+    {
+        // Нормализовать
+
+        return $this->settingsProvider->set($settings);
+    }
+
+    public function unRegistration(): void
+    {
+        $this->settingsProvider->remove();
     }
 
     /**

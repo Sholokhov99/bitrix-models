@@ -61,16 +61,16 @@
         },
         {
             "name": "sholokhov/bitrix-option",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sholokhov99/bitrix-option.git",
-                "reference": "6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90"
+                "reference": "07e46d56c2de7b3553473ef8274e279b88d3a6c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sholokhov99/bitrix-option/zipball/6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90",
-                "reference": "6ce87167aafe861e2c6a4dc1ac347ddcca1e8d90",
+                "url": "https://api.github.com/repos/Sholokhov99/bitrix-option/zipball/07e46d56c2de7b3553473ef8274e279b88d3a6c7",
+                "reference": "07e46d56c2de7b3553473ef8274e279b88d3a6c7",
                 "shasum": ""
             },
             "require": {
@@ -99,9 +99,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Sholokhov99/bitrix-option/issues",
-                "source": "https://github.com/Sholokhov99/bitrix-option/tree/1.0.1"
+                "source": "https://github.com/Sholokhov99/bitrix-option/tree/1.0.3"
             },
-            "time": "2024-08-18T04:35:38+00:00"
+            "time": "2024-08-29T16:53:10+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

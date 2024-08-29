@@ -4,11 +4,14 @@ namespace Sholokhov\BitrixModels\Models;
 
 use ReflectionException;
 
+use Sholokhov\BitrixModels\Providers\Query\Builder as QueryBuilder;
 use Sholokhov\BitrixModels\DTO\ModelSettingsInterface;
 use Sholokhov\BitrixModels\Exception\SystemException;
 
 use Sholokhov\BitrixOption\Exception\InvalidValueException;
+use Sholokhov\BitrixOption\Builder\Loader as SettingsLoader;
 use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
+use Sholokhov\BitrixOption\Manager as SettingsManager;
 
 /**
  * Базовое описание структуры модели.
@@ -17,7 +20,12 @@ use Sholokhov\BitrixOption\Exception\ConfigurationNotFoundException;
  */
 abstract class AbstractModel implements ModelInterface
 {
-    private readonly Manager $manager;
+    /**
+     * Провайдер настроек модели
+     *
+     * @var SettingsManager
+     */
+    private readonly SettingsManager $settingsProvider;
 
     /**
      * @param string|null $siteID - ID сайта, для которого необходимо подгрузить настройки модели
@@ -27,7 +35,7 @@ abstract class AbstractModel implements ModelInterface
      */
     public function __construct(?string $siteID = null)
     {
-        $this->manager = new Manager(static::class, $siteID);
+        $this->settingsProvider = SettingsLoader::loadByEntity($this, $siteID);
     }
 
     /**
@@ -39,7 +47,7 @@ abstract class AbstractModel implements ModelInterface
      */
     final public function query(): object
     {
-        return $this->manager->getQueryProvider();
+        return QueryBuilder::make(static::class, $this->getSettings());
     }
 
     /**
@@ -62,7 +70,7 @@ abstract class AbstractModel implements ModelInterface
      */
     final public function getSiteID(): string
     {
-        return $this->manager->getSiteID();
+        return $this->settingsProvider->getSiteID();
     }
 
     /**
@@ -74,6 +82,12 @@ abstract class AbstractModel implements ModelInterface
      */
     final protected function getSettings(): ModelSettingsInterface
     {
-        return $this->manager->getSettings();
+        $settings = $this->settingsProvider->get();
+
+        if (!($settings instanceof ModelSettingsInterface)) {
+            throw new SystemException('Model settings store does not implement interface ' . ModelSettingsInterface::class);
+        }
+
+        return $settings;
     }
 }
